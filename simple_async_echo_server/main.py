@@ -22,20 +22,19 @@ async def listen_for_connect(server_socket: socket.socket, loop: AbstractEventLo
 
 
 async def main():
-    # create socket
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
+        server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
-    # bind to an address
-    server_address = ('127.0.0.1', 8000)
-    server_socket.setblocking(False)  # non-blocking
-    server_socket.bind(server_address)
+        # bind to an address
+        server_address = ('127.0.0.1', 8000)
+        server_socket.setblocking(False)  # non-blocking
+        server_socket.bind(server_address)
 
-    print("listing.......")
-    server_socket.listen()
+        print("listing.......")
+        server_socket.listen()
 
-    loop = asyncio.get_event_loop()
-    await listen_for_connect(server_socket, loop)
+        loop = asyncio.get_event_loop()
+        await listen_for_connect(server_socket, loop)
 
 
 asyncio.run(main())
